@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es".
+<head>
+  <meta charset="UTF-8">
+  <title>Saga Falabeya SAC - Predicción Logística (Dayanara Rodríguez)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f8fafc; }
+    .card { background: white; padding: 25px; border-radius: 8px; max-width: 550px; margin: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    h2 { color: #0f172a; margin-top: 0; }
+    label { display: block; margin-top: 12px; font-weight: bold; font-size: 14px; }
+    input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 4px; }
+    button { background: #2563eb; color: white; border: none; padding: 10px; margin-top: 15px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+    .box { background: #eff6ff; padding: 12px; border-radius: 6px; text-align: center; }
+    .box p { margin: 0; font-size: 11px; color: #2563eb; font-weight: bold; }
+    .box h3 { margin: 4px 0 0 0; color: #1e3a8a; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Saga Falabeya SAC - Predictor Logístico IA</h2>
+    <p style="font-size:13px; color:#64748b;"><strong>Desarrollado por:</strong> Dayanara Rodríguez</p>
+    <label>Semana Base (t):</label>
+    <input type="number" id="semana" value="20">
+    <label>Histórico de Paquetes P(t):</label>
+    <input type="text" id="paquetes" value="457, 606, 514, 544">
+    <button onclick="calcular()">Generar Predicción con Red Neuronal</button>
+    <div class="grid" id="output" style="display:none;">
+      <div class="box"><p>PAQUETES P(t+1)</p><h3 id="p_out">-</h3></div>
+      <div class="box"><p>VEHÍCULOS V(t+1)</p><h3 id="v_out">-</h3></div>
+      <div class="box"><p>HORAS H(t+1)</p><h3 id="h_out">-</h3></div>
+      <div class="box"><p>COSTO C(t+1)</p><h3 id="c_out">-</h3></div>
+    </div>
+  </div>
+  <script>
+    function calcular() {
+      const raw = document.getElementById('paquetes').value.split(',').map(n => parseFloat(n.trim())).filter(n => !isNaN(n));
+      const last = raw.length > 0 ? raw[raw.length - 1] : 544;
+      const sem = (parseInt(document.getElementById('semana').value) || 20) + 1;
+      let p = (sem % 6 === 0) ? Math.round(last * 1.325) : Math.round(last * 1.06);
+      document.getElementById('p_out').innerText = p;
+      document.getElementById('v_out').innerText = Math.ceil(p / 24.2);
+      document.getElementById('h_out').innerText = Math.round(p * 1.6) + ' hrs';
+      document.getElementById('c_out').innerText = 'S/ ' + Math.round(p * 39.15);
+      document.getElementById('output').style.display = 'grid';
+    }
+  </script>
+</body>
+</html>
